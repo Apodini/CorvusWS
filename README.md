@@ -1,49 +1,82 @@
-## How to use this repository
-### Template
-When creating a new repository make sure to select this repository as a repository template. ![](https://github.com/Apodini/Template-Repository/raw/develop/Images/RepositoryTemplate.png)
+# CorvusWS
 
-### Customize the repository
-Enter your repository specific configuration
-- Enter your project name instead of "PROJECT_NAME" in .jazzy.yml
-- Remove the "Images" folder
-- Replace the "Package.swift", "Sources" and "Tests" folder with your own Swift Package
-- Update the README with your information
+# Corvus
 
+CorvusWS is an extension to [Corvus](https://github.com/Apodini/corvus), the first truly declarative server-side framework for Swift. It provides a declarative, composable syntax which makes it easy to get APIs up and running. It is based heavily on the existing work from [Vapor](https://github.com/vapor/vapor).
 
-### GitHub Actions
-This repository contains several workflows which require you to provide a GitHub Secret. Secrets are encrypted environment variables that you create in a repository for use with GitHub Actions.
+# Example
 
-#### 1. Create a personal access token
-- Go to your token settings in GitHub (click on `Settings` in the user drop-down menu, then `Developer` settings in the sidebar, then click on `Personal access tokens`)
-- Then click the `Generate token` button.
-- Make sure to copy the access token
+Below is an example of a WebSocket Endpoint.
 
-![](https://github.com/Apodini/Template-Repository/raw/develop/Images/AccessToken.png)
+```Swift
+class EchoEndpoint: WebSocketEndpoint {
+    var app: Application
+    var pathComponent: PathComponent
 
-#### 2. Create a secret
-Next, you’ll need to add a new secret to your repository.
+    func onUpgrade(_ request: Request, _ ws: WebSocket) {}
+    func onText(_ ws: WebSocket, _ text: String) {
+        ws.send("Test")
+    }
 
-- Open the settings for your repository and click `Secrets` in the sidebar
-- Click `Add a new secret` and set the name to `ACCESS_TOKEN`
-- Paste the copied personal access token into  `Value`
-- Click `Add secret`
+    init(_ pathComponent: PathComponent, _ app: Application) {
+        self.pathComponent = pathComponent
+        self.app = app
+    }
+}
+```
 
-![](https://github.com/Apodini/Template-Repository/raw/release/Images/Secret.png)
+# How to set up
 
-#### 3. Test all available GitHub Actions
+After your Swift Project, in the `Package.Swift` file, you will need to add the dependencies 
+for `CorvusWS`, `Corvus` and a `Fluent` database driver of your choice. Below is an example with an 
+`SQLite` driver:
 
-### ⬆️ Remove everything up to here ⬆️
+```Swift
+// swift-tools-version:5.2
+import PackageDescription
 
-# Project Name
+let package = Package(
+    name: "XpenseServer",
+    platforms: [
+        .macOS(.v10_15)
+    ],
+    products: [
+        .library(name: "XpenseServer", targets: ["XpenseServer"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/Apodini/corvusWS.git", from: "0.0.1"),
+        .package(url: "https://github.com/Apodini/corvus.git", from: "0.0.14"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
+        .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0-rc")
+    ],
+    targets: [
+        .target(name: "Run",
+                dependencies: [
+                    .target(name: "XpenseServer")
+                ]),
+        .target(name: "XpenseServer",
+                dependencies: [
+                    .product(name: "Corvus", package: "corvus"),
+                    .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver")
+                ]),
+        .testTarget(name: "XpenseServerTests",
+                    dependencies: [
+                        .target(name: "XpenseServer"),
+                        .product(name: "XCTVapor", package: "vapor"),
+                        .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver")
+                    ])
+    ]
+)
+```
 
-## Requirements
+# How to contribute
 
-## Installation/Setup/Integration
+Review our [contribution guidelines](https://github.com/Apodini/.github/blob/release/CONTRIBUTING.md) for contribution formalities.
 
-## Usage
+# Sources
 
-## Contributing
-Contributions to this projects are welcome. Please make sure to read the [contribution guidelines](https://github.com/Apodini/.github/blob/release/CONTRIBUTING.md) first.
+[Corvus](https://github.com/Apodini/corvus)
 
-## License
-This project is licensed under the MIT License. See [License](https://github.com/Apodini/Template-Repository/blob/release/LICENSE) for more information.
+[Vapor](https://github.com/vapor/vapor)
+
+[Fluent](https://github.com/vapor/fluent)

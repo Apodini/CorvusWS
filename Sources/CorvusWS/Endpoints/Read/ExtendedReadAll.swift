@@ -1,0 +1,57 @@
+import Vapor
+import Fluent
+import Corvus
+
+/// A class that provides functionality to read all objects of a generic type
+/// `T` conforming to `CorvusModel`.
+public final class ExtendedReadAll<T: CorvusModel>: ExtendedReadEndpoint {
+
+    /// The return type of the `.query()`.
+    public typealias QuerySubject = T
+
+    /// The return type of the `.handler()`.
+    public typealias Element = [T]
+
+    /// A property that describes if only existing, only trashed or both objects
+    /// should be read from the database.
+    public let target: ReadTarget<QuerySubject>
+
+    /// The default `operationType` is GET.
+    public var operationType: OperationType { .get }
+
+    /// Initializes the component
+    ///
+    /// - Parameter target: A `ReadTarget` which controls where to query the
+    /// item from.
+    public init(_ target: ReadTarget<QuerySubject> = .existing) {
+        self.target = target
+    }
+
+    /// A method to return all objects of the type `QuerySubject` from the
+    /// database, depending on the `target`.
+    ///
+    /// - Parameter req: An incoming `Request`.
+    /// - Returns: An array of `QuerySubjects`.
+    /// - Throws: An `Abort` error if something goes wrong.
+    public func handler(_ req: Request) throws ->
+        EventLoopFuture<Element> {
+        switch target.option {
+        case .existing:
+            return try query(req)
+                .all()
+        case .all:
+            return try query(req)
+                .withDeleted()
+                .all()
+        case .trashed(let deletedTimestamp):
+            return try query(req)
+                .withDeleted()
+                .filter(
+                    .path(deletedTimestamp.path, schema: T.schema),
+                    .notEqual,
+                    .null
+                )
+                .all()
+        }
+    }
+}
