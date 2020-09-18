@@ -1,7 +1,5 @@
 # CorvusWS
 
-# Corvus
-
 CorvusWS is an extension to [Corvus](https://github.com/Apodini/corvus), the first truly declarative server-side framework for Swift. It provides a declarative, composable syntax which makes it easy to get APIs up and running. It is based heavily on the existing work from [Vapor](https://github.com/vapor/vapor).
 
 # Example
