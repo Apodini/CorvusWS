@@ -1,0 +1,40 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/CorvusWS/CorvusWS/Sources/CorvusWS/Endpoints/Groups/ExtendedGroup.swift",
+      "line": 5,
+      "symbol": "ExtendedGroup",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/CorvusWS/CorvusWS/Sources/CorvusWS/ExtendedApi.swift",
+      "line": 5,
+      "symbol": "ExtendedApi",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/CorvusWS/CorvusWS/Sources/CorvusWS/ExtendedFunctionBuilders/ExtendedEndpointBuilder.swift",
+      "line": 5,
+      "symbol": "ExtendedEndpointBuilder",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/CorvusWS/CorvusWS/Sources/CorvusWS/WebSocketEndpoint.swift",
+      "line": 9,
+      "symbol": "WebSocketEndpoint.pathComponent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/CorvusWS/CorvusWS/Sources/CorvusWS/WebSocketEndpoint.swift",
+      "line": 31,
+      "symbol": "WebSocketEndpoint.operationType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/CorvusWS/CorvusWS"
+}
